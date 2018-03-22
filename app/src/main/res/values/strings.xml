@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">AppDemo</string>
+
+    <string name="acc_partner_id">accengage3d7241436398f62</string>
+    <string name="acc_private_key">da3a1ac770bd27b330cdf5e8b31272e0f11e3e5f</string>
+
+    <string name="acc_logging">true</string>
+    <string name="acc_no_geoloc">true</string>
+</resources>
