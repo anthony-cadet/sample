@@ -1,5 +1,6 @@
 package com.accengage.appdemo.main;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -18,18 +19,19 @@ import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-/**
- * Created by acadet on 22/03/2018.
- */
+import butterknife.OnClick;
 
 public class MessageInboxAdapter extends RecyclerView.Adapter<MessageInboxAdapter.MessageInboxHolder> {
 
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM//yyyy hh:mm:ss", Locale.FRANCE);
+    private final Context context;
 
+    private MessageViewListener listener;
     private List<Message> messages;
 
-    public MessageInboxAdapter(List<Message> messages) {
+    MessageInboxAdapter(Context context, MessageViewListener listener, List<Message> messages) {
+        this.context = context;
+        this.listener = listener;
         this.messages = messages;
     }
 
@@ -57,9 +59,19 @@ public class MessageInboxAdapter extends RecyclerView.Adapter<MessageInboxAdapte
 
     class MessageInboxHolder extends RecyclerView.ViewHolder {
 
+        private Message message;
+
+        @BindView(R.id.v_color) View view;
         @BindView(R.id.img) ImageView img;
         @BindView(R.id.tv_title) TextView title;
         @BindView(R.id.tv_date) TextView date;
+        @BindView(R.id.tv_summary) TextView summary;
+
+        @OnClick(R.id.background)
+        void onMessageClick() {
+            message.setRead(true);
+            listener.gotToMessageActivity(message);
+        }
 
         MessageInboxHolder(View itemView) {
             super(itemView);
@@ -67,10 +79,11 @@ public class MessageInboxAdapter extends RecyclerView.Adapter<MessageInboxAdapte
         }
 
         private void bindMessage(Message message) {
-
             if (message == null) {
                 return;
             }
+
+            this.message = message;
 
             message.getIcon(new Message.onIconDownloadedListener() {
                 @Override
@@ -81,6 +94,12 @@ public class MessageInboxAdapter extends RecyclerView.Adapter<MessageInboxAdapte
 
             title.setText(message.getTitle());
             date.setText(dateFormat.format(message.getSendDate()));
+            summary.setText(message.getText());
+            view.setBackgroundColor(message.isArchived() ?
+                    context.getResources().getColor(R.color.red)
+                    : message.isRead()
+                    ? context.getResources().getColor(R.color.white)
+                    : context.getResources().getColor(R.color.blue_light));
         }
     }
 }
