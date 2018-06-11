@@ -44,7 +44,7 @@ public class MessageInboxAdapter extends RecyclerView.Adapter<MessageInboxAdapte
 
     @Override
     public void onBindViewHolder(@NonNull MessageInboxHolder holder, int position) {
-        holder.bindMessage(messages.get(position));
+        holder.bindMessage(messages.get(position), position);
     }
 
     @Override
@@ -60,6 +60,7 @@ public class MessageInboxAdapter extends RecyclerView.Adapter<MessageInboxAdapte
     class MessageInboxHolder extends RecyclerView.ViewHolder {
 
         private Message message;
+        private int position;
 
         @BindView(R.id.v_color) View view;
         @BindView(R.id.img) ImageView img;
@@ -70,7 +71,7 @@ public class MessageInboxAdapter extends RecyclerView.Adapter<MessageInboxAdapte
         @OnClick(R.id.background)
         void onMessageClick() {
             message.setRead(true);
-            listener.gotToMessageActivity(message);
+            listener.gotToMessageActivity(message, position);
         }
 
         MessageInboxHolder(View itemView) {
@@ -78,12 +79,13 @@ public class MessageInboxAdapter extends RecyclerView.Adapter<MessageInboxAdapte
             ButterKnife.bind(this, itemView);
         }
 
-        private void bindMessage(Message message) {
+        private void bindMessage(Message message, int position) {
             if (message == null) {
                 return;
             }
 
             this.message = message;
+            this.position = position;
 
             message.getIcon(new Message.onIconDownloadedListener() {
                 @Override

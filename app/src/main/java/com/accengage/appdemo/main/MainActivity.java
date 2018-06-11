@@ -21,6 +21,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.internal.Utils;
 
 
 public class MainActivity extends A4SActivity implements MessageViewListener {
@@ -45,15 +46,6 @@ public class MainActivity extends A4SActivity implements MessageViewListener {
         initView();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        if (!srlInbox.isRefreshing()) {
-            refreshInbox();
-        }
-    }
-
     private void initView() {
         setNbrInbox(0);
         initPullToRefresh();
@@ -70,7 +62,7 @@ public class MainActivity extends A4SActivity implements MessageViewListener {
         });
     }
 
-    private void refreshInbox() {
+    private void showRefreshAnimation() {
         srlInbox.post(new Runnable() {
             @Override
             public void run() {
@@ -150,9 +142,18 @@ public class MainActivity extends A4SActivity implements MessageViewListener {
 
     // Message View Listener
     @Override
-    public void gotToMessageActivity(Message message) {
+    public void gotToMessageActivity(Message message, int position) {
+        // pass the message to the MessageActivity
         Intent intent = new Intent(this, MessageActivity.class);
         intent.putExtra(MessageActivity.MESSAGE_KEY, message);
+
+        // notify the adapter and the server that the message is read
+        mAdapter.notifyItemChanged(position);
+        A4S.get(MainActivity.this).updateMessages(inbox);
+
+        // update the number in the header
+        setNbrInbox(InboxUtil.getNumberInbox(messages));
+
         startActivity(intent);
     }
 
