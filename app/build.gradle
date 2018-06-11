@@ -28,7 +28,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
     // SDK
-    implementation 'com.ad4screen.sdk:A4SSDK:3.7.0'
+    implementation 'com.ad4screen.sdk:A4SSDK:3.7.2'
 
     // Recycler View
     implementation 'com.android.support:recyclerview-v7:27.1.0'
