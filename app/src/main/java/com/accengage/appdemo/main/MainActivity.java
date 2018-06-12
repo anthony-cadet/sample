@@ -62,15 +62,6 @@ public class MainActivity extends A4SActivity implements MessageViewListener {
         });
     }
 
-    private void showRefreshAnimation() {
-        srlInbox.post(new Runnable() {
-            @Override
-            public void run() {
-                srlInbox.setRefreshing(true);
-            }
-        });
-    }
-
     private void retrieveInbox() {
         inboxCallback = new A4S.Callback<Inbox>() {
             @Override
