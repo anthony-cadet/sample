@@ -7,4 +7,10 @@
 
     <string name="acc_logging">true</string>
     <string name="acc_no_geoloc">true</string>
+    <string name="title">Title</string>
+    <string name="sender">Sender</string>
+    <string name="date">Date</string>
+    <string name="extract">Extract</string>
+    <string name="categorie">Categorie</string>
+    <string name="body">Body</string>
 </resources>

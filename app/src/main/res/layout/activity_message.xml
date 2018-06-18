@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:paddingBottom="40dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:paddingBottom="10dp"
@@ -30,32 +30,35 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
+                android:layout_marginStart="12dp"
                 android:layout_marginTop="5dp"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/titleMessage"
+                    android:id="@+id/tv_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Title"
+                    android:text="@string/title"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textColor="#007AFF"
+                    android:textColor="@color/electric_blue"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/senderMessage"
+                    android:id="@+id/tv_sender"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Sender"
-                    android:textColor="#212121" />
+                    android:text="@string/sender"
+                    android:textColor="@color/black" />
 
                 <TextView
-                    android:id="@+id/dateMessage"
+                    android:id="@+id/tv_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Date"
-                    android:textColor="#212121" />
+                    android:text="@string/date"
+                    android:textColor="@color/black" />
+
             </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout
@@ -69,8 +72,8 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
-                android:text="Extract"
-                android:textColor="#616161"
+                android:text="@string/extract"
+                android:textColor="@color/dark_gray"
                 android:textSize="14sp" />
 
             <TextView
@@ -85,16 +88,17 @@
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
                 android:paddingTop="3dp"
-                android:text="Categorie"
-                android:textColor="#ffffff"
+                android:text="@string/categorie"
+                android:textColor="@color/white"
                 android:textSize="12sp" />
+
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_marginBottom="20dp"
-            android:background="#E0E0E0" />
+            android:background="@color/light_grey" />
 
         <TextView
             android:id="@+id/contentMessage"
@@ -103,8 +107,8 @@
             android:paddingBottom="20dp"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
-            android:text="Body"
-            android:textColor="#616161"
+            android:text="@string/body"
+            android:textColor="@color/dark_gray"
             android:textSize="14sp" />
 
         <WebView
@@ -113,19 +117,11 @@
             android:layout_height="200dp"
             android:padding="12dp" />
 
-        <LinearLayout
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_buttons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="12dp">
-
-            <LinearLayout
-                android:id="@+id/buttonsLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="20dp"
-                android:orientation="horizontal" />
-        </LinearLayout>
+            android:padding="12dp" />
 
     </LinearLayout>
 
