@@ -1,15 +1,11 @@
 package com.accengage.appdemo.base;
 
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 
 import com.ad4screen.sdk.A4S;
-import com.ad4screen.sdk.activities.A4SActivity;
 
-/**
- * Created by acadet on 22/03/2018.
- */
-
-public abstract class BaseActivity extends A4SActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -27,6 +23,10 @@ public abstract class BaseActivity extends A4SActivity {
     protected void onPause() {
         super.onPause();
         A4S.get(this).stopActivity(this);
+    }
+
+    protected A4S getA4S() {
+        return A4S.get(this);
     }
 
 }

@@ -6,25 +6,23 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.TextView;
 
 import com.accengage.appdemo.R;
+import com.accengage.appdemo.base.BaseActivity;
 import com.accengage.appdemo.messages.MessageActivity;
 import com.accengage.appdemo.utils.InboxUtil;
 import com.ad4screen.sdk.A4S;
 import com.ad4screen.sdk.Inbox;
 import com.ad4screen.sdk.Message;
-import com.ad4screen.sdk.activities.A4SActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.internal.Utils;
 
 
-public class MainActivity extends A4SActivity implements MessageViewListener {
+public class MainActivity extends BaseActivity implements MessageViewListener {
 
     private static final String TAG = MainActivity.class.getName();
 
@@ -37,8 +35,9 @@ public class MainActivity extends A4SActivity implements MessageViewListener {
 
     @BindView(R.id.srl_inbox) SwipeRefreshLayout srlInbox;
     @BindView(R.id.rv_messages_inbox) RecyclerView rvMsgInbox;
-    @BindView(R.id.tv_num_message) TextView tvNumMessages;
+//    @BindView(R.id.tv_num_message) TextView tvNumMessages;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -128,7 +127,7 @@ public class MainActivity extends A4SActivity implements MessageViewListener {
 
     private void setNbrInbox(int nbr) {
         String n = nbr > 0 ? " (" + nbr +")" : "";
-        tvNumMessages.setText(String.format(getString(R.string.inbox), n));
+//        tvNumMessages.setText(String.format(getString(R.string.inbox), n));
     }
 
     // Message View Listener
@@ -140,12 +139,17 @@ public class MainActivity extends A4SActivity implements MessageViewListener {
 
         // notify the adapter and the server that the message is read
         mAdapter.notifyItemChanged(position);
-        A4S.get(MainActivity.this).updateMessages(inbox);
+        getA4S().updateMessages(inbox);
 
         // update the number in the header
         setNbrInbox(InboxUtil.getNumberInbox(messages));
 
         startActivity(intent);
+    }
+
+    @Override
+    public void updateMessage() {
+        getA4S().updateMessages(inbox);
     }
 
     // Hack

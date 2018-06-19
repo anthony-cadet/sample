@@ -1,19 +1,23 @@
 package com.accengage.appdemo.messages;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.accengage.appdemo.R;
+import com.accengage.appdemo.base.BaseActivity;
 import com.ad4screen.sdk.Message;
 
 import java.text.SimpleDateFormat;
@@ -24,7 +28,7 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MessageActivity extends AppCompatActivity {
+public class MessageActivity extends BaseActivity {
 
     public static final String MESSAGE_KEY = "message";
 
@@ -43,6 +47,34 @@ public class MessageActivity extends AppCompatActivity {
     @BindView(R.id.tv_content) TextView tvContent;
     @BindView(R.id.wv_message) WebView wvMessage;
     @BindView(R.id.rv_buttons) RecyclerView rvButtons;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.action_bar, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == R.id.action_bar_delete) {
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.message)
+                    .setMessage(R.string.delete_message)
+                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            message.setArchived(true);
+                            finish();
+                        }
+                    })
+                    .setNegativeButton(R.string.no, null)
+                    .setCancelable(false)
+                    .show();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
