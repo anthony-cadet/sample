@@ -35,7 +35,6 @@ public class MainActivity extends BaseActivity implements MessageViewListener {
 
     @BindView(R.id.srl_inbox) SwipeRefreshLayout srlInbox;
     @BindView(R.id.rv_messages_inbox) RecyclerView rvMsgInbox;
-//    @BindView(R.id.tv_num_message) TextView tvNumMessages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,7 +126,7 @@ public class MainActivity extends BaseActivity implements MessageViewListener {
 
     private void setNbrInbox(int nbr) {
         String n = nbr > 0 ? " (" + nbr +")" : "";
-//        tvNumMessages.setText(String.format(getString(R.string.inbox), n));
+        setTitle(String.format(getString(R.string.inbox), n));
     }
 
     // Message View Listener

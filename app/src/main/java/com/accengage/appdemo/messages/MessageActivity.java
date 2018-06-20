@@ -134,7 +134,7 @@ public class MessageActivity extends BaseActivity {
         tvSummary.setText(message.getText());
 
         displayCategory();
-        displayMessage();
+        displayBody();
     }
 
     private void displayCategory() {
@@ -146,8 +146,8 @@ public class MessageActivity extends BaseActivity {
     }
 
     @SuppressLint("SetJavaScriptEnabled")
-    private void displayMessage() {
-
+    private void displayBody() {
+        // There are also the following types : System, Event, Url, Push
         switch (message.getContentType()) {
 
             case Web:
