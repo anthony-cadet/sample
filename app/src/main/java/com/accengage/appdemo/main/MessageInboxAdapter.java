@@ -70,7 +70,14 @@ public class MessageInboxAdapter extends RecyclerView.Adapter<MessageInboxAdapte
 
         @OnClick(R.id.background)
         void onMessageClick() {
-            message.setRead(true);
+
+            if (message.isRead()) {
+                message.hasBeenDisplayedToUser(context);
+            } else {
+                message.setRead(true);
+                message.hasBeenOpenedByUser(context);
+            }
+
             listener.gotToMessageActivity(message, position);
         }
 

@@ -4,5 +4,4 @@ import com.ad4screen.sdk.Message;
 
 public interface MessageViewListener {
     void gotToMessageActivity(Message message, int position);
-    void updateMessage();
 }

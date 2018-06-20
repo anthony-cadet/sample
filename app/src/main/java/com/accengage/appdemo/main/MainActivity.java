@@ -25,6 +25,7 @@ import butterknife.ButterKnife;
 public class MainActivity extends BaseActivity implements MessageViewListener {
 
     private static final String TAG = MainActivity.class.getName();
+    private static final int SHOW_MESSAGE = 1000;
 
     private Inbox inbox;
     private MessageInboxAdapter mAdapter;
@@ -42,6 +43,23 @@ public class MainActivity extends BaseActivity implements MessageViewListener {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         initView();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+
+            case SHOW_MESSAGE:
+
+                if (resultCode != RESULT_OK) {
+                    return;
+                }
+
+                removeMessage(data.getIntExtra(MessageActivity.MESSAGE_POSITION_KEY, -1));
+                break;
+        }
     }
 
     private void initView() {
@@ -143,12 +161,21 @@ public class MainActivity extends BaseActivity implements MessageViewListener {
         // update the number in the header
         setNbrInbox(InboxUtil.getNumberInbox(messages));
 
-        startActivity(intent);
+        startActivityForResult(intent, SHOW_MESSAGE);
     }
 
-    @Override
-    public void updateMessage() {
+    public void removeMessage(int position) {
+
+        if (position < 0) {
+            Log.d(TAG, "Invalid position");
+            return;
+        }
+
+        messages.remove(position);
+        mAdapter.notifyItemRemoved(position);
+
         getA4S().updateMessages(inbox);
+        setNbrInbox(InboxUtil.getNumberInbox(messages));
     }
 
     // Hack

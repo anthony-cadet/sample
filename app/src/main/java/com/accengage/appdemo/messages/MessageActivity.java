@@ -3,6 +3,7 @@ package com.accengage.appdemo.messages;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -31,12 +32,14 @@ import butterknife.ButterKnife;
 public class MessageActivity extends BaseActivity {
 
     public static final String MESSAGE_KEY = "message";
+    public static final String MESSAGE_POSITION_KEY = "position";
 
     private static final String TAG = MessageActivity.class.getName();
 
+    private int messagePosition;
+
     private Message message;
     private List<Message.Button> buttons;
-    private ButtonMessageAdapter mAdapter;
 
     @BindView(R.id.iv_icon) ImageView ivIcon;
     @BindView(R.id.tv_title) TextView tvTitle;
@@ -64,7 +67,9 @@ public class MessageActivity extends BaseActivity {
                     .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            message.setArchived(true);
+                            Intent intent = new Intent();
+                            intent.putExtra(MESSAGE_POSITION_KEY, messagePosition);
+                            setResult(RESULT_OK, intent);
                             finish();
                         }
                     })
@@ -91,9 +96,10 @@ public class MessageActivity extends BaseActivity {
     }
 
     private void retrieveMessageObject() {
-        // Retrieve Message
+        // Retrieve Message & position
         Bundle extras = getIntent().getExtras();
         message = extras != null ? (Message) extras.getParcelable(MESSAGE_KEY) : null;
+        messagePosition = extras != null ? extras.getInt(MESSAGE_POSITION_KEY) : -1;
 
         // Retrieve Buttons
         int buttonNbr = 0;
@@ -110,7 +116,7 @@ public class MessageActivity extends BaseActivity {
     }
 
     private void setupAdapter() {
-        mAdapter = new ButtonMessageAdapter(getApplicationContext(), buttons);
+        ButtonMessageAdapter mAdapter = new ButtonMessageAdapter(getApplicationContext(), buttons);
         rvButtons.setAdapter(mAdapter);
         rvButtons.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
@@ -162,4 +168,5 @@ public class MessageActivity extends BaseActivity {
                 break;
         }
     }
+
 }
