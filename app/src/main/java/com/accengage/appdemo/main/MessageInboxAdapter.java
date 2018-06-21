@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.accengage.appdemo.R;
-import com.ad4screen.sdk.A4S;
 import com.ad4screen.sdk.Message;
 
 import java.text.SimpleDateFormat;
@@ -30,10 +29,10 @@ public class MessageInboxAdapter extends RecyclerView.Adapter<MessageInboxAdapte
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM//yyyy hh:mm:ss", Locale.FRANCE);
     private final Context context;
 
-    private MessageViewListener listener;
+    private ShowMessageListener listener;
     private List<Message> messages;
 
-    MessageInboxAdapter(Context context, MessageViewListener listener, List<Message> messages) {
+    MessageInboxAdapter(Context context, ShowMessageListener listener, List<Message> messages) {
         this.context = context;
         this.listener = listener;
         this.messages = messages;
@@ -75,24 +74,17 @@ public class MessageInboxAdapter extends RecyclerView.Adapter<MessageInboxAdapte
         @OnClick(R.id.background)
         void onMessageClick() {
 
+            if (message == null) {
+                Log.e(TAG, "message is null");
+                return;
+            }
+
             if (message.isRead()) {
                 message.hasBeenDisplayedToUser(context);
             } else {
                 message.setRead(true);
                 message.hasBeenOpenedByUser(context);
             }
-
-            message.display(context, new A4S.Callback<Message>() {
-                @Override
-                public void onResult(Message message) {
-                    listener.gotToMessageActivity(message, position);
-                }
-
-                @Override
-                public void onError(int i, String s) {
-                    Log.e(TAG, s);
-                }
-            });
         }
 
         MessageInboxHolder(View itemView) {

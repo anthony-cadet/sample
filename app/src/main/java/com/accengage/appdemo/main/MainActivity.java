@@ -22,7 +22,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class MainActivity extends BaseActivity implements MessageViewListener {
+public class MainActivity extends BaseActivity implements ShowMessageListener {
 
     private static final String TAG = MainActivity.class.getName();
     private static final int SHOW_MESSAGE = 1000;
@@ -50,13 +50,15 @@ public class MainActivity extends BaseActivity implements MessageViewListener {
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode) {
-
+            // Check if the previous Activity is MessageActivity
             case SHOW_MESSAGE:
 
+                // Check the resultCode
                 if (resultCode != RESULT_OK) {
                     return;
                 }
 
+                // Remove the message
                 removeMessage(data.getIntExtra(MessageActivity.MESSAGE_POSITION_KEY, -1));
                 break;
         }
@@ -147,11 +149,11 @@ public class MainActivity extends BaseActivity implements MessageViewListener {
         setTitle(String.format(getString(R.string.inbox), n));
     }
 
-    // Message View Listener
+    // Show Message Listener
     @Override
-    public void gotToMessageActivity(Message message, int position) {
+    public void gotToMessageActivity(Message message, final int position) {
         // pass the message to the MessageActivity
-        Intent intent = new Intent(getApplicationContext(), MessageActivity.class);
+        final Intent intent = new Intent(getApplicationContext(), MessageActivity.class);
         intent.putExtra(MessageActivity.MESSAGE_KEY, message);
 
         // notify the adapter and the server that the message is read
@@ -162,7 +164,18 @@ public class MainActivity extends BaseActivity implements MessageViewListener {
         // update the number in the header
         setNbrInbox(InboxUtil.getNumberInbox(messages));
 
-        startActivityForResult(intent, SHOW_MESSAGE);
+        // To notify the SDK that the message is displayed
+        message.display(getApplicationContext(), new A4S.Callback<Message>() {
+            @Override
+            public void onResult(Message message) {
+                startActivityForResult(intent, SHOW_MESSAGE);
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                Log.e(TAG, s);
+            }
+        });
     }
 
     public void removeMessage(int position) {
@@ -172,25 +185,15 @@ public class MainActivity extends BaseActivity implements MessageViewListener {
             return;
         }
 
+        // Remove it in the message list
         messages.remove(position);
+
+        // Update messages display
         mAdapter.notifyItemRemoved(position);
 
+        // Notify the SDK
         A4S.get(this).updateMessages(inbox);
+
         setNbrInbox(InboxUtil.getNumberInbox(messages));
     }
-
-    // Hack
-    private void delete() {
-        for (Message msg : messages) {
-            msg.setRead(true);
-            msg.setArchived(true);
-        }
-
-        messages.clear();
-        mAdapter.notifyDataSetChanged();
-
-        A4S.get(MainActivity.this).updateMessages(inbox);
-        setNbrInbox(InboxUtil.getNumberInbox(messages));
-    }
-
 }
