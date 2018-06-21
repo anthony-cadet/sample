@@ -85,6 +85,8 @@ public class MessageInboxAdapter extends RecyclerView.Adapter<MessageInboxAdapte
                 message.setRead(true);
                 message.hasBeenOpenedByUser(context);
             }
+
+            listener.gotToMessageActivity(message, position);
         }
 
         MessageInboxHolder(View itemView) {
