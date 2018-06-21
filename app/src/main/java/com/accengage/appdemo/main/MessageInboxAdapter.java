@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.accengage.appdemo.R;
+import com.ad4screen.sdk.A4S;
 import com.ad4screen.sdk.Message;
 
 import java.text.SimpleDateFormat;
@@ -22,6 +24,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MessageInboxAdapter extends RecyclerView.Adapter<MessageInboxAdapter.MessageInboxHolder> {
+
+    private static final String TAG = MessageInboxAdapter.class.getName();
 
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM//yyyy hh:mm:ss", Locale.FRANCE);
     private final Context context;
@@ -78,7 +82,17 @@ public class MessageInboxAdapter extends RecyclerView.Adapter<MessageInboxAdapte
                 message.hasBeenOpenedByUser(context);
             }
 
-            listener.gotToMessageActivity(message, position);
+            message.display(context, new A4S.Callback<Message>() {
+                @Override
+                public void onResult(Message message) {
+                    listener.gotToMessageActivity(message, position);
+                }
+
+                @Override
+                public void onError(int i, String s) {
+                    Log.e(TAG, s);
+                }
+            });
         }
 
         MessageInboxHolder(View itemView) {

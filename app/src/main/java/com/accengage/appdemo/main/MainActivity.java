@@ -99,7 +99,7 @@ public class MainActivity extends BaseActivity implements MessageViewListener {
             }
         };
 
-        getA4S().getInbox(inboxCallback);
+        A4S.get(this).getInbox(inboxCallback);
     }
 
     private void retrieveMessages() {
@@ -151,12 +151,13 @@ public class MainActivity extends BaseActivity implements MessageViewListener {
     @Override
     public void gotToMessageActivity(Message message, int position) {
         // pass the message to the MessageActivity
-        Intent intent = new Intent(this, MessageActivity.class);
+        Intent intent = new Intent(getApplicationContext(), MessageActivity.class);
         intent.putExtra(MessageActivity.MESSAGE_KEY, message);
 
         // notify the adapter and the server that the message is read
         mAdapter.notifyItemChanged(position);
-        getA4S().updateMessages(inbox);
+
+        A4S.get(this).updateMessages(inbox);
 
         // update the number in the header
         setNbrInbox(InboxUtil.getNumberInbox(messages));
@@ -174,7 +175,7 @@ public class MainActivity extends BaseActivity implements MessageViewListener {
         messages.remove(position);
         mAdapter.notifyItemRemoved(position);
 
-        getA4S().updateMessages(inbox);
+        A4S.get(this).updateMessages(inbox);
         setNbrInbox(InboxUtil.getNumberInbox(messages));
     }
 

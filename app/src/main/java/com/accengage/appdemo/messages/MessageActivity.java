@@ -59,7 +59,7 @@ public class MessageActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
+        // Display a pop up on click delete
         if (item.getItemId() == R.id.action_bar_delete) {
             new AlertDialog.Builder(this)
                     .setTitle(R.string.message)
@@ -119,7 +119,6 @@ public class MessageActivity extends BaseActivity {
         ButtonMessageAdapter mAdapter = new ButtonMessageAdapter(getApplicationContext(), buttons);
         rvButtons.setAdapter(mAdapter);
         rvButtons.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-
     }
 
     private void displayContent() {
@@ -168,5 +167,4 @@ public class MessageActivity extends BaseActivity {
                 break;
         }
     }
-
 }
